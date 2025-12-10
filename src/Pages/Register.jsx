@@ -2,12 +2,12 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
 import { toast } from "react-toastify";
-import { Eye, EyeOff } from "lucide-react";
 import Loading from "../Components/Loading";
 import register from "../assets/register.jpg";
+import { Eye, EyeOff } from "lucide-react";
 
 const Register = () => {
-  const { createUser, setUser, handleGoogleSignIn, updateUser } =
+  const { createUser, setUser, handleGoogleSignIn } =
     useContext(AuthContext);
 
   const [error, setError] = useState("");
@@ -20,9 +20,12 @@ const Register = () => {
     e.preventDefault();
     const form = e.target;
     const name = form.name.value;
-    const photo = form.photo.value;
+    const photo = form.photo
     const email = form.email.value;
     const password = form.password.value;
+    const file = photo.files[0];
+    console.log(file);
+    return;
 
     const uppercase = /[A-Z]/;
     const lowercase = /[a-z]/;
@@ -43,12 +46,12 @@ const Register = () => {
     setLoading(true);
 
     createUser(email, password)
-      .then(() => {
-        return updateUser({
-          displayName: name,
-          photoURL: photo,
-        });
-      })
+      // .then(() => {
+      //   return updateUser({
+      //     displayName: name,
+      //     photoURL: photo,
+      //   });
+      // })
       .then(() => {
         toast.success("Sign Up Successful");
         navigate("/");
@@ -147,7 +150,7 @@ const Register = () => {
               </label>
               <input
                 name="photo"
-                type="text"
+                type="file"
                 className="w-full px-4 py-3 border-b-2 border-gray-200 focus:border-purple-500 outline-none transition-colors bg-transparent"
                 placeholder="Photo URL..."
                 required

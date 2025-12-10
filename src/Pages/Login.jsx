@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
-import { Eye, EyeOff, Mail, Lock, CheckCircle } from "lucide-react";
 import { toast } from "react-toastify";
-import Loading from "../Components/Loading";
 import login from "../assets/login.jpeg";
+import Loading from "../Components/Loading";
+import { CheckCircle, Eye, EyeOff, Lock, Mail } from "lucide-react";
+
 
 const Login = () => {
   const { signIn, handleGoogleSignIn, setUser } = useContext(AuthContext);
@@ -57,13 +58,14 @@ const Login = () => {
       .finally(() => setLoading(false));
   };
 
-  {
-    loading && (
+  if (loading) {
+    return (
       <div className="min-h-screen flex justify-center items-center">
-        <Loading></Loading>
+        <Loading />
       </div>
     );
   }
+
 
   const handleForgetPass = () => {
     navigate(`/forgetPass/${email}`);
