@@ -10,7 +10,6 @@ import {
   updateProfile,
 } from "firebase/auth";
 import app from "../firebase/firebase.config";
-import Loading from "../Components/Loading";
 
 export const AuthContext = createContext();
 
@@ -21,8 +20,8 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // const updateUser = (updateData) =>
-  //   updateProfile(auth.currentUser, updateData);
+  const updateUser = (updateData) =>
+    updateProfile(auth.currentUser, updateData);
   const createUser = (email, password) =>
     createUserWithEmailAndPassword(auth, email, password);
   const signIn = (email, password) =>
@@ -47,7 +46,7 @@ const AuthProvider = ({ children }) => {
     logOut,
     loading,
     setLoading,
-    // updateUser,
+    updateUser,
   };
 
   return (

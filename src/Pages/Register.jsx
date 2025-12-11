@@ -5,9 +5,10 @@ import { toast } from "react-toastify";
 import Loading from "../Components/Loading";
 import register from "../assets/register.jpg";
 import { Eye, EyeOff } from "lucide-react";
+import axios from "axios";
 
 const Register = () => {
-  const { createUser, setUser, handleGoogleSignIn } =
+  const { createUser, setUser, handleGoogleSignIn, updateUser } =
     useContext(AuthContext);
 
   const [error, setError] = useState("");
@@ -16,16 +17,15 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     const form = e.target;
     const name = form.name.value;
-    const photo = form.photo
+    const photo = form.photo;
     const email = form.email.value;
     const password = form.password.value;
     const file = photo.files[0];
     console.log(file);
-    return;
 
     const uppercase = /[A-Z]/;
     const lowercase = /[a-z]/;
@@ -45,26 +45,61 @@ const Register = () => {
 
     setLoading(true);
 
-    createUser(email, password)
-      // .then(() => {
-      //   return updateUser({
-      //     displayName: name,
-      //     photoURL: photo,
-      //   });
-      // })
-      .then(() => {
-        toast.success("Sign Up Successful");
-        navigate("/");
-      })
-      .catch((err) => {
-        setLoading(false);
+    const res = await axios.post(
+      `https://api.imgbb.com/1/upload?key=8e77ac3eea553e979eb569aacc9010ac`,
+      { image: file },
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
 
-        if (err.code === "auth/email-already-in-use") {
-          toast.error("Email already in Use");
-        } else {
-          setError(err.message);
-        }
-      });
+    console.log(res.data);
+    // return;
+
+    const mainPhotoUrl = res.data.data.display_url;
+
+    const formData = {
+      name,
+      email,
+      password,
+      mainPhotoUrl,
+    };
+
+    if (res.data.success == true) {
+      createUser(email, password)
+        .then((result) => {
+          console.log(result);
+          return updateUser({
+            displayName: name,
+            photoURL: mainPhotoUrl,
+          });
+        })
+        .then(() => {
+          axios.post("http://localhost:5000/users", formData)
+          .then ((res) => {
+            console.log(res.data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+          toast.success("Sign Up Successful");
+          // navigate("/");
+        })
+        .catch((err) => {
+          setLoading(false);
+
+          if (err.code === "auth/email-already-in-use") {
+            toast.error("Email already in Use");
+          } else {
+            setError(err.message);
+          }
+        });
+    }
+
+    // return;
   };
 
   const googleSignUp = () => {
@@ -78,13 +113,13 @@ const Register = () => {
       .finally(() => setLoading(false));
   };
 
-  {
-    loading && (
-      <div className="min-h-screen flex justify-center items-center">
-        <Loading></Loading>
-      </div>
-    );
-  }
+  // {
+  //   loading && (
+  //     <div className="min-h-screen flex justify-center items-center">
+  //       <Loading></Loading>
+  //     </div>
+  //   );
+  // }
 
   const renderLoadingSpinner = (
     <div className="flex justify-center items-center">
