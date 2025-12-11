@@ -24,8 +24,9 @@ const Register = () => {
     const photo = form.photo;
     const email = form.email.value;
     const password = form.password.value;
-    const file = photo.files[0];
-    console.log(file);
+    const file = photo.files[0]
+    const role = form.role.value;
+    console.log(role);
 
     const uppercase = /[A-Z]/;
     const lowercase = /[a-z]/;
@@ -65,6 +66,7 @@ const Register = () => {
       email,
       password,
       mainPhotoUrl,
+      role,
     };
 
     if (res.data.success == true) {
@@ -113,13 +115,13 @@ const Register = () => {
       .finally(() => setLoading(false));
   };
 
-  // {
-  //   loading && (
-  //     <div className="min-h-screen flex justify-center items-center">
-  //       <Loading></Loading>
-  //     </div>
-  //   );
-  // }
+  {
+    loading && (
+      <div className="min-h-screen flex justify-center items-center">
+        <Loading></Loading>
+      </div>
+    );
+  }
 
   const renderLoadingSpinner = (
     <div className="flex justify-center items-center">
@@ -191,6 +193,12 @@ const Register = () => {
                 required
               />
             </div>
+
+            <select name="role" defaultValue="Choose Role" className="select">
+              <option disabled={true}>Choose Role</option>
+              <option value='manager'>Manager</option>
+              <option value='user'>User</option>
+            </select>
 
             <div className="relative">
               <label className="block text-sm font-medium text-gray-600 mb-2">
