@@ -86,7 +86,7 @@ const Register = () => {
             console.log(err);
           })
           toast.success("Sign Up Successful");
-          // navigate("/");
+          navigate("/");
         })
         .catch((err) => {
           setLoading(false);
