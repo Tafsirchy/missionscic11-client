@@ -56,9 +56,6 @@ const Register = () => {
       }
     );
 
-    console.log(res.data);
-    // return;
-
     const mainPhotoUrl = res.data.data.display_url;
 
     const formData = {

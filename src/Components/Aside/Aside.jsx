@@ -21,9 +21,22 @@ const Aside = ({ onLogout }) => {
       {/* Navigation */}
       <nav className="flex-1 px-4 py-4 space-y-1">
         <NavItem to="/dashboard" icon={<LayoutDashboard />} label="Dashboard" />
-        <NavItem to="/dashboard/add-products" icon={<Package />} label="Add Products" />
-        <NavItem to="/dashboard/analytics" icon={<BarChart3 />} label="Analytics" />
-        <NavItem to="/dashboard/settings" icon={<Settings />} label="Settings" />
+        <NavItem
+          to="/dashboard/add-products"
+          icon={<Package />}
+          label="Add Products"
+        />
+        <NavItem
+          to="/dashboard/manage-products"
+          icon={<BarChart3 />}
+          label="Manage Products"
+        />
+        <NavItem to="/admin/users" icon={<Users />} label="Users" />
+        <NavItem
+          to="/dashboard/settings"
+          icon={<Settings />}
+          label="Settings"
+        />
       </nav>
 
       {/* Footer — Always stays at the bottom */}
